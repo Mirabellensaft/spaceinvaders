@@ -18,8 +18,9 @@ const CANVAS_HEIGHT: u32 = 400;
 /// The main function contains the game loop. Most the of game's logic
 /// can be found in the [game_lib::game] sub module. 
 fn main() {
+    let mut ticker = 0_u64;
     let (mut canvas, mut pump_events) = canvas::init(CANVAS_WIDTH, CANVAS_HEIGHT);
-    let game = canvas::game_init();
+    let mut game = canvas::game_init();
 
     thread::spawn(move || {});
     'game: loop {
@@ -34,7 +35,8 @@ fn main() {
                 _ => continue 'game,
             }
         }
-        canvas::display_frame(&mut canvas, &game);
-        thread::sleep(time::Duration::from_millis(500));
+        canvas::display_frame(&mut canvas, &mut game);
+        thread::sleep(time::Duration::from_millis(100));
+        ticker += 1;
     }
 }

@@ -6,6 +6,8 @@ use sdl2::EventPump;
 
 use crate::game_lib::types::Game;
 
+use super::types::DriftDirection;
+
 /// This function initializes the canvas
 pub fn init(width: u32, height: u32) -> (Canvas<Window>, EventPump) {
     let sdl_context = sdl2::init().unwrap();
@@ -35,14 +37,16 @@ pub fn game_init() -> Game {
 
 }
 
-pub fn display_frame(renderer: &mut Canvas<Window>, game: &Game) {
+pub fn display_frame(renderer: &mut Canvas<Window>, game: &mut Game) {
+
+    spacial_offset(game);
 
     renderer.set_draw_color(Color::RGB(0, 0, 0));
     renderer.clear();
 
     for row in 0..5 {
         for i in 0..11 {
-            let x = i as i32 *  game.invaders[row][i].hight + (10_i32 * i as i32);
+            let x = i as i32 *  game.invaders[row][i].hight + (10_i32 * i as i32) + game.state.horizontal_drift;
             let y = row as i32 * game.invaders[row][i].width + (10_i32 * row as i32);
             let drawing_color = game.invaders[row][i].color;
             renderer.set_draw_color(drawing_color);
@@ -63,4 +67,21 @@ pub fn display_frame(renderer: &mut Canvas<Window>, game: &Game) {
 pub fn clear() {
     println!("clearing grid");     
     
+}
+
+fn spacial_offset(game: &mut Game) {
+
+    if game.state.horizontal_drift == 0 {
+        game.state.drift_direction = DriftDirection::Right;
+        game.state.horizontal_drift += 1;
+    } else if game.state.horizontal_drift == 100 {
+        game.state.drift_direction = DriftDirection::Left;
+        game.state.horizontal_drift -= 1;
+    } else {
+        if game.state.drift_direction == DriftDirection::Right {
+            game.state.horizontal_drift += 1;
+        } else {
+            game.state.horizontal_drift -= 1;
+        }
+    }
 }

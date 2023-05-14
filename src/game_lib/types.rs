@@ -4,6 +4,7 @@ use rand::{thread_rng, Rng};
 
 pub struct Game {
     pub invaders: Vec<Vec<Invader>>,
+    pub state: GameState,
     // ship: Ship,
 }
 
@@ -20,9 +21,15 @@ impl Game {
             invaders.push(inner)
         };
 
+        let game_state = GameState {
+            counter: 0,
+            horizontal_drift: 0,
+            drift_direction: DriftDirection::Right,
+        };
+
         let game = Game {
            invaders: invaders,
-
+           state: game_state,
         }; 
         game
     }
@@ -58,11 +65,20 @@ pub struct Ship {
 
 }
 
+pub struct GameState {
+    pub counter: i32,
+    pub horizontal_drift: i32,
+    pub drift_direction: DriftDirection,
+}
+
 #[derive(Debug)]
 pub enum GameEvent {
     FieldOccupied,
     GameTied,
     GameWon,
 }
-
-
+#[derive(PartialEq)]
+pub enum DriftDirection {
+    Left,
+    Right,
+}
