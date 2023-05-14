@@ -1,22 +1,21 @@
-use sdl2::keyboard::Keycode;
 use sdl2::event::Event;
+use sdl2::keyboard::Keycode;
 use std::{thread, time};
 
 mod game_lib;
 use game_lib::canvas;
 
-
 // Canvas and Playing Field Size
 
 /// Canvas width in pixels
-const CANVAS_WIDTH: u32 = 500;
+const CANVAS_WIDTH: u32 = 600;
 /// Canvas height in pixels
 const CANVAS_HEIGHT: u32 = 400;
 
-///# Main 
-/// 
+///# Main
+///
 /// The main function contains the game loop. Most the of game's logic
-/// can be found in the [game_lib::game] sub module. 
+/// can be found in the [game_lib::game] sub module.
 fn main() {
     let mut ticker = 0_u64;
     let (mut canvas, mut pump_events) = canvas::init(CANVAS_WIDTH, CANVAS_HEIGHT);
